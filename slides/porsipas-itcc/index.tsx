@@ -406,11 +406,12 @@ const Lock = () => (
   </svg>
 );
 
-function BrowserFrame({ url, children }: { url: string; children: ReactNode }) {
+function BrowserFrame({ url, children, maxWidth = 1380 }: { url: string; children: ReactNode; maxWidth?: number | string }) {
   return (
     <div
       style={{
         width: '100%',
+        maxWidth,
         borderRadius: bento.radius,
         overflow: 'hidden',
         border: `1px solid ${bento.border}`,
@@ -746,7 +747,7 @@ const StatCard = ({
 }) => (
   <Mat
     style={{
-      padding: '56px 40px',
+      padding: '32px 24px',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-between',
@@ -761,20 +762,24 @@ const StatCard = ({
       <div
         style={{
           fontFamily: 'var(--osd-font-display)',
-          fontSize: 96,
+          fontSize: 44,
           fontWeight: 800,
           letterSpacing: '-0.04em',
           lineHeight: 1,
           fontFeatureSettings: "'tnum' 1",
           color: 'var(--osd-accent)',
-          marginBottom: 10,
+          marginBottom: 6,
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          maxWidth: '100%',
         }}
       >
         {value}
       </div>
-      <div style={{ fontSize: 28, fontWeight: 700, color: ink.fg, lineHeight: 1.3 }}>{label}</div>
+      <div style={{ fontSize: 24, fontWeight: 700, color: ink.fg, lineHeight: 1.3 }}>{label}</div>
     </div>
-    <div style={{ fontSize: 19, color: ink.muted, lineHeight: 1.45, borderTop: `1px solid ${bento.border}`, paddingTop: 16 }}>
+    <div style={{ fontSize: 16, color: ink.muted, lineHeight: 1.4, borderTop: `1px solid ${bento.border}`, paddingTop: 12 }}>
       {caption}
     </div>
   </Mat>
@@ -1151,135 +1156,123 @@ const LoopPage: Page = () => (
   </div>
 );
 
-/* 9 - Prototype siswa: Free editorial left + Framed visual right */
-const StudentSignInPage: Page = () => (
-  <div style={{ ...fill, padding: '72px 115px 96px' }}>
+/* 9 - Prototype siswa: Beranda Siswa */
+const StudentHomePage: Page = () => (
+  <div style={{ ...fill, padding: '48px 115px 72px' }}>
     <Atmos />
-    <div style={{ ...content, display: 'flex', flexDirection: 'column', gap: 40 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+    <div style={{ ...content, width: '100%', maxWidth: 1520, margin: '0 auto', height: '100%', display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
         <div>
-          <div style={{ ...kicker, marginBottom: 10 }}>Prototype · Akses Siswa &amp; Staf</div>
-          <h2 style={{ ...headline, fontSize: 52, margin: 0 }}>
-            Masuk dengan <Acc>kode sesi.</Acc> Tanpa registrasi akun.
+          <div style={{ ...kicker, marginBottom: 6 }}>Prototype · Sisi Siswa</div>
+          <h2 style={{ ...headline, fontSize: 40, margin: 0 }}>
+            Beranda Siswa: Masuk dengan <Acc>Kode Sesi</Acc> Tanpa Akun.
           </h2>
         </div>
-        <Chip accent>Inklusif &amp; Cepat</Chip>
+        <Chip accent>Anonim &amp; Inklusif</Chip>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '0.85fr 1.15fr', gap: 40, alignItems: 'stretch', flex: 1, minHeight: 0 }}>
-        {/* Left: Free typography narrative (NO card) */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 22, justifyContent: 'center' }}>
-          <div style={{ display: 'flex', gap: 8 }}>
-            <Chip>Prinsip Keamanan</Chip>
-          </div>
-          <h3 style={{ fontSize: 38, fontWeight: 800, letterSpacing: '-0.02em', color: ink.fg, margin: 0 }}>
-            Anonim, Tanpa Email, Siap Pakai Bersama
-          </h3>
-          <p style={{ fontSize: 25, color: ink.muted, lineHeight: 1.45, margin: 0 }}>
-            Siswa tidak diminta mendaftar email atau nomor telepon: cukup memasukkan kode sesi 6 digit harian yang di-generate sistem sekolah.
-          </p>
-          <p style={{ fontSize: 21, color: ink.muted, lineHeight: 1.45, margin: 0 }}>
-            Untuk petugas, verifikasi dilakukan via OTP nomor HP yang otomatis mengarahkan akses ke dasbor sesuai peran masing-masing.
-          </p>
-
-          <div style={{ borderLeft: `3px solid var(--osd-accent)`, paddingLeft: 18, marginTop: 8 }}>
-            <div style={{ fontSize: 19, fontWeight: 700, color: ink.fg }}>
-              Meniadakan hambatan login pada siswa SD dan mencegah kebocoran data anak di bawah umur.
-            </div>
-          </div>
-        </div>
-
-        {/* Right: Clean framed screenshots */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, alignContent: 'center' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <div style={{ borderRadius: bento.radiusSm, overflow: 'hidden', border: `1px solid ${bento.border}`, boxShadow: SHADOW }}>
-              <img src={shotHome} alt="Beranda Siswa" style={{ width: '100%', display: 'block', height: 620, objectFit: 'cover', objectPosition: 'left top' }} />
-            </div>
-            <div style={{ textAlign: 'center', fontSize: 16.5, fontWeight: 600, color: ink.muted }}>
-              Beranda · Masuk Kode Akses
-            </div>
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <div style={{ borderRadius: bento.radiusSm, overflow: 'hidden', border: `1px solid ${bento.border}`, boxShadow: SHADOW }}>
-              <img src={shotLogin} alt="Masuk Staf" style={{ width: '100%', display: 'block', height: 620, objectFit: 'cover', objectPosition: 'left top' }} />
-            </div>
-            <div style={{ textAlign: 'center', fontSize: 16.5, fontWeight: 600, color: ink.muted }}>
-              Masuk Staf · Multi-Role OTP
-            </div>
-          </div>
-        </div>
+      <div style={{ flex: 1, minHeight: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <BrowserFrame url="app.porsipas.id">
+          <img
+            src={shotHome}
+            alt="Beranda Siswa PorsiPas"
+            style={{ display: 'block', width: '100%', height: 'auto', maxHeight: 680, objectFit: 'cover' }}
+          />
+        </BrowserFrame>
       </div>
     </div>
     <Footer />
   </div>
 );
 
-/* 10 - Prototype siswa: Framed visual left + Free editorial right */
-const MicroFeedbackPage: Page = () => (
-  <div style={{ ...fill, padding: '72px 115px 96px' }}>
+/* 10 - Prototype siswa: Masuk Staf Multi-Role */
+const StaffLoginPage: Page = () => (
+  <div style={{ ...fill, padding: '48px 115px 72px' }}>
     <Atmos />
-    <div style={{ ...content, display: 'flex', flexDirection: 'column', gap: 40 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+    <div style={{ ...content, width: '100%', maxWidth: 1520, margin: '0 auto', height: '100%', display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
         <div>
-          <div style={{ ...kicker, marginBottom: 10 }}>Prototype · Alur Pengisian</div>
-          <h2 style={{ ...headline, fontSize: 52, margin: 0 }}>
-            Selesai dalam <Acc>5–10 detik.</Acc>
+          <div style={{ ...kicker, marginBottom: 6 }}>Prototype · Akses Pengelola</div>
+          <h2 style={{ ...headline, fontSize: 40, margin: 0 }}>
+            Masuk Staf: Verifikasi OTP &amp; <Acc>Pengalihan Peran Otomatis.</Acc>
+          </h2>
+        </div>
+        <Chip accent>Multi-Role Access</Chip>
+      </div>
+
+      <div style={{ flex: 1, minHeight: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <BrowserFrame url="app.porsipas.id/login">
+          <img
+            src={shotLogin}
+            alt="Masuk Staf PorsiPas"
+            style={{ display: 'block', width: '100%', height: 'auto', maxHeight: 680, objectFit: 'cover' }}
+          />
+        </BrowserFrame>
+      </div>
+    </div>
+    <Footer />
+  </div>
+);
+
+/* 11 - Prototype siswa: Micro-Feedback 5-10 Detik */
+const FeedbackQuestionPage: Page = () => (
+  <div style={{ ...fill, padding: '48px 115px 72px' }}>
+    <Atmos />
+    <div style={{ ...content, width: '100%', maxWidth: 1520, margin: '0 auto', height: '100%', display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+        <div>
+          <div style={{ ...kicker, marginBottom: 6 }}>Prototype · Micro-Feedback</div>
+          <h2 style={{ ...headline, fontSize: 40, margin: 0 }}>
+            Micro-Feedback Siswa: Selesai dalam <Acc>5–10 Detik</Acc> Berbasis Ikon.
           </h2>
         </div>
         <Chip accent>Desain Khusus Anak</Chip>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1.15fr 0.85fr', gap: 40, alignItems: 'stretch', flex: 1, minHeight: 0 }}>
-        {/* Left: Clean framed screenshots */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, alignContent: 'center' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <div style={{ borderRadius: bento.radiusSm, overflow: 'hidden', border: `1px solid ${bento.border}`, boxShadow: SHADOW }}>
-              <img src={shotFeedback} alt="Micro-feedback" style={{ width: '100%', display: 'block', height: 620, objectFit: 'cover', objectPosition: 'left top' }} />
-            </div>
-            <div style={{ textAlign: 'center', fontSize: 16.5, fontWeight: 600, color: ink.muted }}>
-              Micro-Feedback · Berbasis Ikon
-            </div>
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <div style={{ borderRadius: bento.radiusSm, overflow: 'hidden', border: `1px solid ${bento.border}`, boxShadow: SHADOW }}>
-              <img src={shotKiosk} alt="Mode Kiosk" style={{ width: '100%', display: 'block', height: 620, objectFit: 'cover', objectPosition: 'left top' }} />
-            </div>
-            <div style={{ textAlign: 'center', fontSize: 16.5, fontWeight: 600, color: ink.muted }}>
-              Mode Kiosk · 1 Tablet Per Kelas
-            </div>
-          </div>
-        </div>
-
-        {/* Right: Free typography narrative */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 22, justifyContent: 'center' }}>
-          <div style={{ display: 'flex', gap: 8 }}>
-            <Chip>3 Indikator Utama</Chip>
-          </div>
-          <h3 style={{ fontSize: 34, fontWeight: 800, letterSpacing: '-0.02em', color: ink.fg, margin: 0 }}>
-            Rasa, Porsi, dan Kondisi Makanan
-          </h3>
-          <p style={{ fontSize: 23, color: ink.muted, lineHeight: 1.45, margin: 0 }}>
-            Semua pertanyaan dijawab melalui ikon wajah ekspresif tanpa perlu mengetik sepatah kata pun.
-          </p>
-          <p style={{ fontSize: 19, color: ink.muted, lineHeight: 1.45, margin: 0 }}>
-            Untuk jenjang SD, perangkat kelas dialihkan ke Mode Kiosk: siswa mengantre mengisi secara bergiliran tanpa risiko keluar dari aplikasi.
-          </p>
-
-          <div style={{ borderLeft: `3px solid var(--osd-accent)`, paddingLeft: 18, marginTop: 8 }}>
-            <div style={{ fontSize: 19, fontWeight: 700, color: ink.fg }}>
-              Efisiensi Tinggi: 1 kelas berisi 30 siswa menyelesaikan seluruh umpan balik dalam &lt; 5 menit.
-            </div>
-          </div>
-        </div>
+      <div style={{ flex: 1, minHeight: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <BrowserFrame url="app.porsipas.id/feedback">
+          <img
+            src={shotFeedback}
+            alt="Micro-Feedback Siswa PorsiPas"
+            style={{ display: 'block', width: '100%', height: 'auto', maxHeight: 680, objectFit: 'cover' }}
+          />
+        </BrowserFrame>
       </div>
     </div>
     <Footer />
   </div>
 );
 
-/* 11 - Dashboard SPPG */
+/* 12 - Prototype siswa: Mode Kiosk Tablet Kelas */
+const KioskModePage: Page = () => (
+  <div style={{ ...fill, padding: '48px 115px 72px' }}>
+    <Atmos />
+    <div style={{ ...content, width: '100%', maxWidth: 1520, margin: '0 auto', height: '100%', display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+        <div>
+          <div style={{ ...kicker, marginBottom: 6 }}>Prototype · Mode Kiosk</div>
+          <h2 style={{ ...headline, fontSize: 40, margin: 0 }}>
+            Mode Kiosk: Solusi <Acc>1 Tablet Bersama</Acc> untuk Satu Kelas.
+          </h2>
+        </div>
+        <Chip accent>Inklusivitas SD</Chip>
+      </div>
+
+      <div style={{ flex: 1, minHeight: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <BrowserFrame url="app.porsipas.id/kiosk">
+          <img
+            src={shotKiosk}
+            alt="Mode Kiosk PorsiPas"
+            style={{ display: 'block', width: '100%', height: 'auto', maxHeight: 680, objectFit: 'cover' }}
+          />
+        </BrowserFrame>
+      </div>
+    </div>
+    <Footer />
+  </div>
+);
+
+/* 13 - Dashboard SPPG */
 const DashboardPage: Page = () => (
   <div style={{ ...fill, padding: '48px 115px 72px' }}>
     <Atmos />
@@ -1287,7 +1280,7 @@ const DashboardPage: Page = () => (
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
         <div>
           <div style={{ ...kicker, marginBottom: 6 }}>Prototype · Dasbor Analitik SPPG</div>
-          <h2 style={{ ...headline, fontSize: 42, margin: 0 }}>
+          <h2 style={{ ...headline, fontSize: 40, margin: 0 }}>
             Dari ulasan siswa menjadi <Acc>keputusan menu berbasis data.</Acc>
           </h2>
         </div>
@@ -1299,7 +1292,7 @@ const DashboardPage: Page = () => (
           <img
             src={dashboardSppg}
             alt="Dashboard SPPG PorsiPas"
-            style={{ display: 'block', width: '100%', maxHeight: 660, objectFit: 'contain' }}
+            style={{ display: 'block', width: '100%', height: 'auto', maxHeight: 680, objectFit: 'cover' }}
           />
         </BrowserFrame>
       </div>
@@ -1308,334 +1301,419 @@ const DashboardPage: Page = () => (
   </div>
 );
 
-/* 12 - Sisi tim: Clean headline + 3 framed screenshot cards */
-const TeamCard = ({
-  k,
-  t,
-  d,
-  src,
-  alt,
-}: {
-  k: string;
-  t: string;
-  d: string;
-  src: string;
-  alt: string;
-}) => (
-  <Mat
-    style={{
-      padding: '36px 26px',
-      height: '100%',
-      minWidth: 0,
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-      gap: 20,
-    }}
-  >
-    <div
-      style={{
-        flex: 1,
-        minHeight: 0,
-        borderRadius: bento.radiusSm,
-        overflow: 'hidden',
-        border: `1px solid ${bento.border}`,
-        boxShadow: SHADOW,
-      }}
-    >
-      <img
-        src={src}
-        alt={alt}
-        style={{ display: 'block', width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'left top' }}
-      />
-    </div>
-
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-        <Chip accent>{k}</Chip>
-      </div>
-      <h3 style={{ fontSize: 30, fontWeight: 700, letterSpacing: '-0.02em', color: ink.fg, margin: '0 0 8px' }}>
-        {t}
-      </h3>
-      <p style={{ margin: 0, fontSize: 20, color: ink.muted, lineHeight: 1.5 }}>
-        {d}
-      </p>
-    </div>
-  </Mat>
-);
-
-const TeamPage: Page = () => (
-  <div style={{ ...fill, padding: '72px 115px 96px' }}>
+/* 14 - Tim: Koordinator Titik */
+const KoordinatorPage: Page = () => (
+  <div style={{ ...fill, padding: '48px 115px 72px' }}>
     <Atmos />
-    <div style={{ ...content, display: 'flex', flexDirection: 'column', gap: 36 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+    <div style={{ ...content, width: '100%', maxWidth: 1520, margin: '0 auto', height: '100%', display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
         <div>
-          <div style={{ ...kicker, marginBottom: 10 }}>Prototype · Akses Pengelola</div>
-          <h2 style={{ ...headline, fontSize: 52, margin: 0 }}>
-            Sisi tim: bagikan kode, kirim, dan kelola akun.
+          <div style={{ ...kicker, marginBottom: 6 }}>Prototype · Sisi Koordinator Titik</div>
+          <h2 style={{ ...headline, fontSize: 40, margin: 0 }}>
+            Koordinator Titik: Kelola <Acc>Kode Sesi</Acc> &amp; Feedback Perwakilan.
           </h2>
         </div>
-        <Chip>Multi-Stakeholder</Chip>
+        <Chip accent>Koordinator Titik</Chip>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 32, flex: 1, gridAutoRows: '1fr' }}>
-        <TeamCard
-          k="Koordinator Titik"
-          t="Kode Sesi &amp; Feedback Kelas"
-          d="Menyiapkan kode harian, mengisi feedback perwakilan, dan mengaktifkan Mode Kiosk untuk satu perangkat kelas."
-          src={shotKoordinator}
-          alt="Dashboard Koordinator Titik PorsiPas"
-        />
-        <TeamCard
-          k="Penyalur"
-          t="Status Distribusi Per Titik"
-          d="Pembaruan status pengiriman real-time dari diproses, dalam perjalanan, tiba di sekolah, hingga selesai."
-          src={shotPenyalur}
-          alt="Dashboard Penyalur PorsiPas"
-        />
-        <TeamCard
-          k="Admin SPPG"
-          t="Kelola Akun &amp; Wilayah"
-          d="Manajemen akun koordinator titik, penugasan wilayah distribusi, dan kontrol hak akses terpusat."
-          src={shotAdmin}
-          alt="Dashboard Admin PorsiPas"
-        />
+      <div style={{ flex: 1, minHeight: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <BrowserFrame url="app.porsipas.id/koordinator">
+          <img
+            src={shotKoordinator}
+            alt="Dashboard Koordinator Titik PorsiPas"
+            style={{ display: 'block', width: '100%', height: 'auto', maxHeight: 680, objectFit: 'cover' }}
+          />
+        </BrowserFrame>
       </div>
     </div>
     <Footer />
   </div>
 );
 
-/* 13 - Metodologi: Open headline + 5 distinct cards (like reference slide 7) */
-const ProcessStep = ({ n, title, body }: { n: string; title: string; body: string }) => (
-  <Mat
-    style={{
-      padding: '28px 22px',
-      zIndex: 1,
-      height: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-      gap: 18,
-    }}
-  >
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-      <span
+/* 15 - Tim: Penyalur */
+const PenyalurPage: Page = () => (
+  <div style={{ ...fill, padding: '48px 115px 72px' }}>
+    <Atmos />
+    <div style={{ ...content, width: '100%', maxWidth: 1520, margin: '0 auto', height: '100%', display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+        <div>
+          <div style={{ ...kicker, marginBottom: 6 }}>Prototype · Sisi Penyalur</div>
+          <h2 style={{ ...headline, fontSize: 40, margin: 0 }}>
+            Penyalur: Status Distribusi <Acc>Real-Time</Acc> Per Titik Sekolah.
+          </h2>
+        </div>
+        <Chip accent>Penyalur MBG</Chip>
+      </div>
+
+      <div style={{ flex: 1, minHeight: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <BrowserFrame url="app.porsipas.id/penyalur">
+          <img
+            src={shotPenyalur}
+            alt="Dashboard Penyalur PorsiPas"
+            style={{ display: 'block', width: '100%', height: 'auto', maxHeight: 680, objectFit: 'cover' }}
+          />
+        </BrowserFrame>
+      </div>
+    </div>
+    <Footer />
+  </div>
+);
+
+/* 16 - Tim: Admin SPPG */
+const AdminPage: Page = () => (
+  <div style={{ ...fill, padding: '48px 115px 72px' }}>
+    <Atmos />
+    <div style={{ ...content, width: '100%', maxWidth: 1520, margin: '0 auto', height: '100%', display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+        <div>
+          <div style={{ ...kicker, marginBottom: 6 }}>Prototype · Sisi Admin</div>
+          <h2 style={{ ...headline, fontSize: 40, margin: 0 }}>
+            Admin SPPG: Kelola Akun, Penugasan, &amp; <Acc>Wilayah Distribusi.</Acc>
+          </h2>
+        </div>
+        <Chip accent>Admin SPPG</Chip>
+      </div>
+
+      <div style={{ flex: 1, minHeight: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <BrowserFrame url="app.porsipas.id/admin">
+          <img
+            src={shotAdmin}
+            alt="Dashboard Admin PorsiPas"
+            style={{ display: 'block', width: '100%', height: 'auto', maxHeight: 680, objectFit: 'cover' }}
+          />
+        </BrowserFrame>
+      </div>
+    </div>
+    <Footer />
+  </div>
+);
+/* 17 - Metodologi: Lima tahap Design Thinking (Horizontal Stepper Flow) */
+const ProcessStepCard = ({
+  n,
+  phase,
+  title,
+  body,
+  tag,
+  deliverable,
+  isLast = false,
+}: {
+  n: string;
+  phase: string;
+  title: string;
+  body: string;
+  tag: string;
+  deliverable: string;
+  isLast?: boolean;
+}) => (
+  <div style={{ display: 'flex', flexDirection: 'column', gap: 14, flex: 1, minWidth: 0 }}>
+    {/* Stepper Header Node with connecting line */}
+    <div style={{ display: 'flex', alignItems: 'center', width: '100%', position: 'relative' }}>
+      <div
         style={{
-          position: 'relative',
-          zIndex: 3,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: 44,
-          height: 44,
+          width: 48,
+          height: 48,
           borderRadius: 999,
           fontFamily: FONT_MONO,
           fontWeight: 800,
-          fontSize: 16,
+          fontSize: 18,
           color: 'var(--osd-accent)',
           background: '#fbf8f4',
-          border: '1px solid var(--osd-accent)',
+          border: '2px solid var(--osd-accent)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxShadow: '0 4px 14px rgba(169, 80, 27, 0.15)',
+          zIndex: 2,
+          flexShrink: 0,
         }}
       >
         {n}
-      </span>
-      <Tick />
+      </div>
+
+      {!isLast && (
+        <div
+          style={{
+            flex: 1,
+            height: 2,
+            background: `linear-gradient(90deg, var(--osd-accent) 0%, ${bento.border} 100%)`,
+            marginLeft: 8,
+            marginRight: -4,
+            zIndex: 1,
+          }}
+        />
+      )}
     </div>
 
-    <div>
-      <h3 style={{ fontSize: 24, fontWeight: 700, letterSpacing: '-0.02em', color: ink.fg, margin: '0 0 10px' }}>
-        {title}
-      </h3>
-      <p style={{ fontSize: 17, color: ink.muted, lineHeight: 1.5, margin: 0 }}>
-        {body}
-      </p>
-    </div>
+    {/* Content Card (Natural Height, No Excessive Blank Space) */}
+    <Mat
+      style={{
+        padding: '26px 22px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 16,
+        background: '#ffffff',
+        border: `1px solid ${bento.border}`,
+        boxShadow: '0 10px 24px -12px rgba(30, 47, 64, 0.08)',
+        borderRadius: 20,
+      }}
+    >
+      <div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+          <span style={{ fontFamily: FONT_MONO, fontSize: 12, color: 'var(--osd-accent)', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+            {phase}
+          </span>
+          <span style={{ fontFamily: FONT_MONO, fontSize: 11, color: ink.faint, background: 'rgba(30, 47, 64, 0.05)', padding: '3px 8px', borderRadius: 4 }}>
+            {tag}
+          </span>
+        </div>
 
-    <div style={{ borderTop: `1px solid ${bento.border}`, paddingTop: 12, fontSize: 13, color: ink.faint, fontFamily: FONT_MONO }}>
-      FASE {n}
-    </div>
-  </Mat>
+        <h3 style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-0.02em', color: ink.fg, margin: '0 0 10px', lineHeight: 1.2 }}>
+          {title}
+        </h3>
+
+        <p style={{ fontSize: 16, color: ink.muted, lineHeight: 1.5, margin: 0 }}>
+          {body}
+        </p>
+      </div>
+
+      <div style={{ borderTop: `1px solid ${bento.border}`, paddingTop: 14 }}>
+        <div style={{ fontSize: 11.5, fontFamily: FONT_MONO, color: ink.faint, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>
+          Artefak Hasil
+        </div>
+        <div style={{ fontSize: 14.5, fontWeight: 700, color: ink.fg, display: 'flex', alignItems: 'center', gap: 6 }}>
+          <Tick />
+          {deliverable}
+        </div>
+      </div>
+    </Mat>
+  </div>
 );
 
 const MethodologyPage: Page = () => (
   <div style={{ ...fill, padding: '72px 115px 96px' }}>
     <Atmos />
-    <div style={{ ...content, display: 'flex', flexDirection: 'column', gap: 36 }}>
+    <div style={{ ...content, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
+      {/* Top Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div>
-          <div style={{ ...kicker, marginBottom: 10 }}>Metodologi Desain</div>
-          <h2 style={{ ...headline, fontSize: 52, margin: 0 }}>
+          <div style={{ ...kicker, marginBottom: 8 }}>Metodologi Desain</div>
+          <h2 style={{ ...headline, fontSize: 48, margin: 0 }}>
             Lima tahap pendekatan Design Thinking.
           </h2>
         </div>
         <Chip accent>Framework Kerja</Chip>
       </div>
 
+      {/* Stepper Flow Cards */}
       <div
         style={{
-          position: 'relative',
           display: 'grid',
           gridTemplateColumns: 'repeat(5, 1fr)',
           gap: 20,
-          flex: 1,
-          minHeight: 0,
-          gridAutoRows: '1fr',
+          width: '100%',
+          alignItems: 'start',
+          margin: 'auto 0',
         }}
       >
-        <div
-          aria-hidden
-          style={{
-            position: 'absolute',
-            top: 50,
-            left: '9%',
-            right: '9%',
-            height: 2,
-            background: bento.border,
-            zIndex: 2,
-          }}
+        <ProcessStepCard
+          n="01"
+          phase="Tahap 01"
+          title="Empathize"
+          body="Wawancara mendalam dengan SPPG, guru, dan ahli gizi untuk memetakan alur evaluasi menu MBG hari ini."
+          tag="Riset"
+          deliverable="User Journey Map"
         />
-        <ProcessStep n="01" title="Empathize" body="Wawancara SPPG, guru, dan ahli gizi; memetakan cara mereka mengevaluasi menu hari ini." />
-        <ProcessStep n="02" title="Define" body="Tiga kendala utama dirumuskan dari temuan lapangan, bukan dari asumsi tim semata." />
-        <ProcessStep n="03" title="Ideate" body="Fungsi sistem dipecah ke empat peran pengguna; umpan balik dirancang selesai dalam 5–10 detik." />
-        <ProcessStep n="04" title="Prototype" body="Lo-Fi untuk mengunci alur, High-Fi untuk memvalidasi kontras visual dan mode perangkat kelas." />
-        <ProcessStep n="05" title="Testing" body="Moderated testing dengan 5 pengguna asli lintas jenjang (SD, SMP, SMA, SPPG)." />
+        <ProcessStepCard
+          n="02"
+          phase="Tahap 02"
+          title="Define"
+          body="Merumuskan tiga kendala utama dari data temuan lapangan, bukan asumsi tim semata."
+          tag="Framing"
+          deliverable="Core Problem Statements"
+        />
+        <ProcessStepCard
+          n="03"
+          phase="Tahap 03"
+          title="Ideate"
+          body="Membagi sistem ke 4 peran terintegrasi dan merancang alur feedback 5–10 detik berbasis ikon."
+          tag="Solusi"
+          deliverable="Closed-Loop Ecosystem"
+        />
+        <ProcessStepCard
+          n="04"
+          phase="Tahap 04"
+          title="Prototype"
+          body="Lo-Fi untuk mengunci alur, High-Fi untuk memvalidasi kontras visual dan Mode Kiosk satu tablet."
+          tag="Desain"
+          deliverable="Figma High-Fi Prototype"
+        />
+        <ProcessStepCard
+          n="05"
+          phase="Tahap 05"
+          title="Testing"
+          body="Usability testing terarah kepada 5 partisipan riil lintas jenjang (SD, SMP, SMA, dan SPPG)."
+          tag="Validasi"
+          deliverable="Temuan & Iterasi Desain"
+          isLast
+        />
       </div>
+
+      {/* Bottom Context Banner */}
+      <Mat
+        style={{
+          padding: '16px 28px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          background: 'rgba(30, 47, 64, 0.03)',
+          border: `1px solid ${bento.border}`,
+          borderRadius: 16,
+        }}
+      >
+        <span style={{ fontSize: 16, color: ink.muted, display: 'flex', alignItems: 'center', gap: 10 }}>
+          <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--osd-accent)' }} />
+          <strong>Iteratif &amp; Berbasis Bukti:</strong> Setiap tahap menghasilkan output nyata sebelum melangkah ke tahap berikutnya.
+        </span>
+        <span style={{ fontFamily: FONT_MONO, fontSize: 13, color: ink.faint }}>
+          Standard ISO 9241-210 (Human-Centered Design)
+        </span>
+      </Mat>
     </div>
     <Footer />
   </div>
 );
-
-/* 14 - Usability testing: Open headline + Clean minimal table card */
-type Col = string | { label: string; align?: 'left' | 'right' | 'center' };
-const USTable = ({
-  columns,
-  rows,
-  highlightCol,
-  caption,
-}: {
-  columns: Col[];
-  rows: string[][];
-  highlightCol?: number;
-  caption?: string;
-}) => {
-  const alignOf = (c: Col) => (typeof c === 'string' ? undefined : c.align);
-  const cellStyle = (i: number, header = false): CSSProperties => {
-    const a = alignOf(columns[i]);
-    const base: CSSProperties = header
-      ? {
-          fontSize: 15,
-          fontWeight: 700,
-          letterSpacing: '0.08em',
-          textTransform: 'uppercase',
-          color: ink.fg,
-          background: 'rgba(30, 47, 64, 0.04)',
-          padding: '20px 24px',
-          whiteSpace: 'nowrap',
-          borderBottom: `1px solid ${bento.border}`,
-        }
-      : {
-          fontSize: 19,
-          color: ink.muted,
-          padding: '20px 24px',
-          borderTop: `1px solid ${bento.border}`,
-          lineHeight: 1.5,
-        };
-    return {
-      ...base,
-      textAlign: a ?? (i === 0 ? 'left' : 'left'),
-      ...(i === highlightCol
-        ? {
-            background: 'rgba(169, 80, 27, 0.08)',
-            color: 'var(--osd-accent)',
-            fontWeight: 700,
-          }
-        : {}),
-      ...(i === 0 && !header ? { color: ink.fg, fontWeight: 700, fontFamily: FONT_MONO } : {}),
-    };
-  };
+/* 18 - Usability testing: Temuan & Perbaikan Desain */
+const UsabilityPage: Page = () => {
+  const issues = [
+    {
+      no: '01',
+      problem: 'Tombol aksi utama kurang kontras dengan latar belakang sehingga sulit ditemukan siswa saat pengisian pertama kali.',
+      severity: 'Tinggi',
+      solution: 'Menaikkan rasio kontras tombol ke standard WCAG AA (≥ 4.5:1) dengan warna brand tegas dan label berbobot tebal.',
+      role: 'Siswa SD / SMP',
+      resolved: true,
+    },
+    {
+      no: '02',
+      problem: 'Alur formulir umpan balik berbeda di setiap mode, sehingga guru pendamping bingung mengarahkan siswa saat giliran kelas.',
+      severity: 'Tinggi',
+      solution: 'Menyeragamkan struktur 3 pertanyaan (rasa, porsi, kondisi) secara identik di Mode Kiosk, Mandiri, maupun Perwakilan.',
+      role: 'Koordinator Titik',
+      resolved: true,
+    },
+    {
+      no: '03',
+      problem: 'Duplikasi label di ringkasan aktivitas dasbor: label “Total Porsi Hari Ini” muncul dua kali dengan nilai metrik berbeda (3.250 & 12).',
+      severity: 'Sedang',
+      solution: 'Memperbaiki label metrik kedua menjadi “Total Titik Aktif Hari Ini” untuk mengeliminasi kebingungan pembacaan data SPPG.',
+      role: 'Admin SPPG',
+      resolved: true,
+    },
+  ];
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 16, flex: 1, minHeight: 0 }}>
-      <Mat style={{ overflow: 'hidden', border: `1px solid ${bento.border}`, height: '100%' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr>
-              {columns.map((c, i) => (
-                <th key={i} style={cellStyle(i, true)}>
-                  {typeof c === 'string' ? c : c.label}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((r, ri) => (
-              <tr key={ri}>
-                {r.map((cell, ci) => (
-                  <td key={ci} style={cellStyle(ci)}>
-                    {cell}
-                  </td>
+    <div style={{ ...fill, padding: '56px 115px 72px' }}>
+      <Atmos />
+      <div style={{ ...content, display: 'flex', flexDirection: 'column', gap: 28, height: '100%' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <div>
+            <div style={{ ...kicker, marginBottom: 8 }}>Fase 05 · Evaluasi Usabilitas</div>
+            <h2 style={{ ...headline, fontSize: 44, margin: 0 }}>
+              Tiga temuan kritis, dan ketiganya <Acc>tuntas diperbaiki.</Acc>
+            </h2>
+          </div>
+          <Chip accent>5 Pengguna Riil · Moderated</Chip>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 14, flex: 1, minHeight: 0 }}>
+          {/* Table Container Card */}
+          <Mat style={{ overflow: 'hidden', border: `1px solid ${bento.border}`, boxShadow: '0 8px 30px -15px rgba(30, 47, 64, 0.08)' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+              <thead>
+                <tr style={{ background: 'rgba(30, 47, 64, 0.04)', borderBottom: `2px solid ${bento.border}` }}>
+                  <th style={{ padding: '16px 20px', fontFamily: FONT_MONO, fontSize: 13, fontWeight: 700, color: ink.faint, letterSpacing: '0.08em', textTransform: 'uppercase', width: 64, textAlign: 'center' }}>
+                    No
+                  </th>
+                  <th style={{ padding: '16px 24px', fontSize: 14, fontWeight: 700, color: ink.fg, letterSpacing: '0.06em', textTransform: 'uppercase', width: '38%' }}>
+                    Kendala Pengguna
+                  </th>
+                  <th style={{ padding: '16px 20px', fontSize: 14, fontWeight: 700, color: ink.fg, letterSpacing: '0.06em', textTransform: 'uppercase', width: 170, textAlign: 'center' }}>
+                    Tingkat Keparahan
+                  </th>
+                  <th style={{ padding: '16px 24px', fontSize: 14, fontWeight: 700, color: ink.fg, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                    Solusi &amp; Tindak Lanjut Desain
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {issues.map((item, idx) => (
+                  <tr
+                    key={item.no}
+                    style={{
+                      borderBottom: idx < issues.length - 1 ? `1px solid ${bento.border}` : 'none',
+                      background: idx % 2 === 0 ? 'transparent' : 'rgba(30, 47, 64, 0.015)',
+                    }}
+                  >
+                    <td style={{ padding: '24px 20px', textAlign: 'center', verticalAlign: 'middle', fontFamily: FONT_MONO, fontSize: 18, fontWeight: 800, color: 'var(--osd-accent)' }}>
+                      {item.no}
+                    </td>
+                    <td style={{ padding: '24px 24px', verticalAlign: 'middle' }}>
+                      <div style={{ fontSize: 18, fontWeight: 600, color: ink.fg, lineHeight: 1.45, marginBottom: 6 }}>
+                        {item.problem}
+                      </div>
+                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontFamily: FONT_MONO, color: ink.faint, background: 'rgba(30, 47, 64, 0.05)', padding: '3px 8px', borderRadius: 4 }}>
+                        Ditemukan pada: {item.role}
+                      </div>
+                    </td>
+                    <td style={{ padding: '24px 20px', textAlign: 'center', verticalAlign: 'middle' }}>
+                      <span
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: 6,
+                          padding: '6px 14px',
+                          borderRadius: 999,
+                          fontFamily: FONT_MONO,
+                          fontSize: 13,
+                          fontWeight: 700,
+                          letterSpacing: '0.04em',
+                          background: item.severity === 'Tinggi' ? 'rgba(180, 35, 24, 0.1)' : 'rgba(181, 71, 8, 0.1)',
+                          color: item.severity === 'Tinggi' ? '#b42318' : '#b54708',
+                          border: `1px solid ${item.severity === 'Tinggi' ? 'rgba(180, 35, 24, 0.25)' : 'rgba(181, 71, 8, 0.25)'}`,
+                        }}
+                      >
+                        <span style={{ width: 7, height: 7, borderRadius: '50%', background: item.severity === 'Tinggi' ? '#b42318' : '#b54708' }} />
+                        {item.severity}
+                      </span>
+                    </td>
+                    <td style={{ padding: '24px 24px', verticalAlign: 'middle' }}>
+                      <div style={{ fontSize: 17.5, color: ink.muted, lineHeight: 1.5, marginBottom: 8 }}>
+                        {item.solution}
+                      </div>
+                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 600, color: '#15803d' }}>
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                        Terverifikasi di Prototype High-Fi
+                      </div>
+                    </td>
+                  </tr>
                 ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </Mat>
-      {caption && (
-        <div style={{ ...foot, textAlign: 'right', fontSize: 16, color: ink.faint }}>{caption}</div>
-      )}
+              </tbody>
+            </table>
+          </Mat>
+
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 4px', fontSize: 15, color: ink.faint }}>
+            <span>Metode: In-Person Moderated (Surabaya) &amp; Remote Moderated Usability Testing</span>
+            <span>Target: Siswa, Koordinator Sekolah, dan Tim SPPG</span>
+          </div>
+        </div>
+      </div>
+      <Footer />
     </div>
   );
 };
-
-const UsabilityPage: Page = () => (
-  <div style={{ ...fill, padding: '72px 115px 96px' }}>
-    <Atmos />
-    <div style={{ ...content, display: 'flex', flexDirection: 'column', gap: 36 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-        <div>
-          <div style={{ ...kicker, marginBottom: 10 }}>Fase 05 · Evaluasi Usabilitas</div>
-          <h2 style={{ ...headline, fontSize: 52, margin: 0 }}>
-            Tiga temuan kritis, dan ketiganya <Acc>tuntas diperbaiki.</Acc>
-          </h2>
-        </div>
-        <Chip accent>5 Pengguna Riil</Chip>
-      </div>
-
-      <USTable
-        columns={[
-          'No',
-          { label: 'Kendala Pengguna', align: 'left' },
-          { label: 'Tingkat Keparahan', align: 'center' },
-          { label: 'Solusi & Perbaikan Desain', align: 'left' },
-        ]}
-        rows={[
-          [
-            '01',
-            'Tombol aksi utama kurang kontras dengan latar belakang sehingga sulit ditemukan siswa.',
-            'Tinggi',
-            'Kontras warna dinaikkan ke rasio 4.5:1 (WCAG AA) agar langsung terlihat oleh siswa dan guru.',
-          ],
-          [
-            '02',
-            'Alur form feedback berbeda di setiap mode, sehingga guru bingung mengarahkan murid.',
-            'Tinggi',
-            'Alur pertanyaan diseragamkan di semua mode (Kiosk, Individual, dan Perwakilan).',
-          ],
-          [
-            '03',
-            'Duplikasi label di ringkasan aktivitas: “Total Porsi Hari Ini” muncul dua kali dengan angka berbeda.',
-            'Sedang',
-            'Label metrik kedua diperbaiki menjadi “Total Titik Aktif Hari Ini” untuk menghindari ambiguitas data.',
-          ],
-        ]}
-        highlightCol={2}
-        caption="Metode: Remote Moderated &amp; In-Person Moderated Testing (Siswa, Koordinator Sekolah, dan SPPG)"
-      />
-    </div>
-    <Footer />
-  </div>
-);
 
 /* 15 - SWOT: Open headline + 4 structured quadrant cards */
 const SwotItem = ({ t }: { t: string }) => (
@@ -1857,10 +1935,14 @@ export const notes: (string | undefined)[] = [
   'Ini tiga kendala yang kami bawa ke tahap ideasi. Klik satu per satu, lalu diam sebentar sebelum pindah.',
   'Beralih dari masalah ke solusi.',
   'Empat sisi, satu lingkar. Tekankan bahwa data kembali menjadi acuan menu berikutnya: di situlah lingkarnya tertutup.',
-  'Tunjukkan alur masuk: siswa tanpa akun, petugas dengan akun. Kode dibuat sistem, bukan oleh guru.',
-  'Tiga pertanyaan, ikon, tanpa mengetik. Mode Kiosk untuk kelas SD: satu tablet, kode aktif, sesi tertutup otomatis.',
-  'Ini layar yang paling sering ditanya juri. Tunjukkan empat metrik, lalu AI Insight, lalu daftar titik distribusi.',
-  'Tiga peran tim ini memakai PorsiPas setiap hari. Cukup satu kalimat per peran, jangan dibaca semua.',
+  'Halaman beranda siswa: masuk cukup dengan kode sesi 6 digit harian tanpa email atau registrasi akun.',
+  'Halaman masuk staf: verifikasi via OTP nomor HP yang langsung mendeteksi peran dan mengarahkan ke dasbor terkait.',
+  'Form micro-feedback: 3 pertanyaan rasa, porsi, kondisi dengan ikon ramah anak, selesai dalam 5–10 detik.',
+  'Mode Kiosk: solusi praktis untuk kelas SD di mana 1 tablet dipakai bergantian oleh seluruh siswa tanpa keluar aplikasi.',
+  'Menu Acceptance Dashboard SPPG: analitik penerimaan menu, persentase sisa piring, keluhan dominan, dan AI Insight.',
+  'Dashboard Koordinator Titik: guru/staf sekolah menyiapkan kode sesi harian dan mengisi validasi feedback perwakilan.',
+  'Dashboard Penyalur: pembaruan status distribusi real-time dari dapur pengolahan hingga tiba dan diverifikasi di sekolah.',
+  'Dashboard Admin SPPG: manajemen data pengguna terpusat, pembuatan akun SPPG dan koordinator titik.',
   'Lima tahap Design Thinking, masing-masing menghasilkan artefak yang bisa ditunjukkan.',
   'Tiga temuan, dua di antaranya severity tinggi: ketiganya sudah kami perbaiki. Tunjuk barisnya, jangan dibaca.',
   'Evaluasi jujur: kekuatan, kelemahan, peluang, ancaman. Sorot satu kuadran per kalimat, jangan baca semua.',
@@ -1876,10 +1958,14 @@ export default [
   DefinePage,
   SectionPage,
   LoopPage,
-  StudentSignInPage,
-  MicroFeedbackPage,
+  StudentHomePage,
+  StaffLoginPage,
+  FeedbackQuestionPage,
+  KioskModePage,
   DashboardPage,
-  TeamPage,
+  KoordinatorPage,
+  PenyalurPage,
+  AdminPage,
   MethodologyPage,
   UsabilityPage,
   SwotPage,
