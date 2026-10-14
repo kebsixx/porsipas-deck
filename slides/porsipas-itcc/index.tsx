@@ -338,42 +338,6 @@ function CountUp({
   );
 }
 
-/* Framed prototype screenshot. */
-function Shot({
-  src,
-  alt,
-  caption,
-  ratio = '16 / 9',
-}: {
-  src: string;
-  alt: string;
-  caption?: string;
-  ratio?: string;
-}) {
-  return (
-    <figure style={{ margin: 0, display: 'flex', flexDirection: 'column', gap: 10, minWidth: 0 }}>
-      <img
-        src={src}
-        alt={alt}
-        style={{
-          display: 'block',
-          width: '100%',
-          aspectRatio: ratio,
-          objectFit: 'cover',
-          objectPosition: 'center top',
-          borderRadius: 'var(--osd-radius)',
-          border: `1px solid ${ink.hair}`,
-          background: ink.surface2,
-          boxShadow: SHADOW,
-        }}
-      />
-      {caption && (
-        <figcaption style={{ ...foot, fontSize: 13, textAlign: 'center' }}>{caption}</figcaption>
-      )}
-    </figure>
-  );
-}
-
 /* Browser chrome for a screenshot. */
 const BarArrow = ({ back }: { back?: boolean }) => (
   <svg
@@ -406,12 +370,21 @@ const Lock = () => (
   </svg>
 );
 
-function BrowserFrame({ url, children, maxWidth = 1380 }: { url: string; children: ReactNode; maxWidth?: number | string }) {
+/* Screenshot sizing budget (1920×1080 canvas, 48/115/72 page padding):
+     content height 960 − header ≈ 67 − gap 16 = 877 for the whole frame.
+     Frame chrome (bar + borders) costs 52, leaving 825 of image height.
+     770 keeps ~55px slack even if a headline wraps to two lines. */
+const SHOT_MAX_W = 1380;
+const SHOT_MAX_H = 770;
+
+/* Frame hugs its screenshot (fit-content), so the image is never cropped
+   and never letterboxed — whichever dimension binds first just wins. */
+function BrowserFrame({ url, children }: { url: string; children: ReactNode }) {
   return (
     <div
       style={{
-        width: '100%',
-        maxWidth,
+        width: 'fit-content',
+        maxWidth: '100%',
         borderRadius: bento.radius,
         overflow: 'hidden',
         border: `1px solid ${bento.border}`,
@@ -1176,7 +1149,7 @@ const StudentHomePage: Page = () => (
           <img
             src={shotHome}
             alt="Beranda Siswa PorsiPas"
-            style={{ display: 'block', width: '100%', height: 'auto', maxHeight: 680, objectFit: 'cover' }}
+            style={{ display: 'block', width: 'auto', height: 'auto', maxWidth: SHOT_MAX_W, maxHeight: SHOT_MAX_H }}
           />
         </BrowserFrame>
       </div>
@@ -1205,7 +1178,7 @@ const StaffLoginPage: Page = () => (
           <img
             src={shotLogin}
             alt="Masuk Staf PorsiPas"
-            style={{ display: 'block', width: '100%', height: 'auto', maxHeight: 680, objectFit: 'cover' }}
+            style={{ display: 'block', width: 'auto', height: 'auto', maxWidth: SHOT_MAX_W, maxHeight: SHOT_MAX_H }}
           />
         </BrowserFrame>
       </div>
@@ -1234,7 +1207,7 @@ const FeedbackQuestionPage: Page = () => (
           <img
             src={shotFeedback}
             alt="Micro-Feedback Siswa PorsiPas"
-            style={{ display: 'block', width: '100%', height: 'auto', maxHeight: 680, objectFit: 'cover' }}
+            style={{ display: 'block', width: 'auto', height: 'auto', maxWidth: SHOT_MAX_W, maxHeight: SHOT_MAX_H }}
           />
         </BrowserFrame>
       </div>
@@ -1263,7 +1236,7 @@ const KioskModePage: Page = () => (
           <img
             src={shotKiosk}
             alt="Mode Kiosk PorsiPas"
-            style={{ display: 'block', width: '100%', height: 'auto', maxHeight: 680, objectFit: 'cover' }}
+            style={{ display: 'block', width: 'auto', height: 'auto', maxWidth: SHOT_MAX_W, maxHeight: SHOT_MAX_H }}
           />
         </BrowserFrame>
       </div>
@@ -1292,7 +1265,7 @@ const DashboardPage: Page = () => (
           <img
             src={dashboardSppg}
             alt="Dashboard SPPG PorsiPas"
-            style={{ display: 'block', width: '100%', height: 'auto', maxHeight: 680, objectFit: 'cover' }}
+            style={{ display: 'block', width: 'auto', height: 'auto', maxWidth: SHOT_MAX_W, maxHeight: SHOT_MAX_H }}
           />
         </BrowserFrame>
       </div>
@@ -1321,7 +1294,7 @@ const KoordinatorPage: Page = () => (
           <img
             src={shotKoordinator}
             alt="Dashboard Koordinator Titik PorsiPas"
-            style={{ display: 'block', width: '100%', height: 'auto', maxHeight: 680, objectFit: 'cover' }}
+            style={{ display: 'block', width: 'auto', height: 'auto', maxWidth: SHOT_MAX_W, maxHeight: SHOT_MAX_H }}
           />
         </BrowserFrame>
       </div>
@@ -1350,7 +1323,7 @@ const PenyalurPage: Page = () => (
           <img
             src={shotPenyalur}
             alt="Dashboard Penyalur PorsiPas"
-            style={{ display: 'block', width: '100%', height: 'auto', maxHeight: 680, objectFit: 'cover' }}
+            style={{ display: 'block', width: 'auto', height: 'auto', maxWidth: SHOT_MAX_W, maxHeight: SHOT_MAX_H }}
           />
         </BrowserFrame>
       </div>
@@ -1379,7 +1352,7 @@ const AdminPage: Page = () => (
           <img
             src={shotAdmin}
             alt="Dashboard Admin PorsiPas"
-            style={{ display: 'block', width: '100%', height: 'auto', maxHeight: 680, objectFit: 'cover' }}
+            style={{ display: 'block', width: 'auto', height: 'auto', maxWidth: SHOT_MAX_W, maxHeight: SHOT_MAX_H }}
           />
         </BrowserFrame>
       </div>
